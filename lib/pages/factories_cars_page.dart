@@ -50,7 +50,10 @@ class FactoriesCarsPage extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(
-            builder: (context) => CarsListPage(factoryName: manufactor.name),
+            builder: (context) => CarsListPage(
+              factoryName: manufactor.name,
+              factoryId: manufactor.id,
+            ),
         ));
       },
       child: Card(

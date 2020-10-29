@@ -1,39 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:showcars_app/models/car.dart';
+import 'package:showcars_app/repositories/car_repository.dart';
 
-class CarsListPage extends StatefulWidget {
+class CarsListPage extends StatelessWidget {
   final String factoryName;
+  final String factoryId;
 
-  CarsListPage({this.factoryName});
+  final CarRepository _repository = CarRepository();
 
-  @override
-  _CarsListPageState createState() => _CarsListPageState();
-}
+  CarsListPage({this.factoryName, this.factoryId});
 
-class _CarsListPageState extends State<CarsListPage> {
-  @override
+   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cars - ${widget.factoryName}'),
+        title: Text('Cars - $factoryName'),
       ),
-      body: Column(
-        children: [
-          _CarListPageItem(),
-        ],
+      body: Container(
+          child: FutureBuilder(
+          future: _repository.getCarsByFactory(factoryId),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              print(snapshot.error);
+              return Center(
+                child: Text("Falha ao tentar acessar o servidor"),
+              );
+            } else if (!snapshot.hasData) {
+              return Center(
+                child: Text("Nenhum carro encontrado"),
+              );
+            }
+
+            return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (BuildContext context, int index) {
+                return _CarListPageItem(car: snapshot.data[index]);
+              }
+            );
+          },
+        ),
       ),
     );
   }
 }
 
 class _CarListPageItem extends StatelessWidget {
+  final Car car;
+
+  _CarListPageItem({this.car});
+
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 160.0,
       padding: EdgeInsets.all(8.0),
       child: Stack(
         alignment: Alignment.center,
         children: [
-          Image(
+          (car.imageUrl != null) ? Image(
+            image: NetworkImage('http://192.168.0.210:5200/${car.imageUrl}'),
+            fit: BoxFit.cover,
+          ) : Image(
             image: AssetImage('assets/images/tesla.jpg'),
           ),
           Container(
@@ -51,7 +82,7 @@ class _CarListPageItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Tesla",
+                  "AAA",
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
@@ -59,7 +90,7 @@ class _CarListPageItem extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "Model S",
+                  car.name,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.w400,
@@ -69,7 +100,6 @@ class _CarListPageItem extends StatelessWidget {
               ],
             ),
           ),
-          
         ],
       ),
     );
