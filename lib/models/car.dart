@@ -3,9 +3,19 @@ class Car {
   String factoryId;
   String name;
   String horsepower;
-  String image;
+  String imageUrl;
 
-  Car({this.id, this.factoryId, this.name, this.horsepower, this.image});
+  Car({this.id, this.factoryId, this.name, this.horsepower, this.imageUrl});
+
+  factory Car.fromJson(Map<String, dynamic> json) {
+    return Car(
+      id: json['id'],
+      factoryId: json['factoryId'],
+      name: json['name'],
+      horsepower: json['horsepower'],
+      imageUrl: json['car_image'],
+    );
+  }
 
   @override
   String toString() => "Car name: $name";
