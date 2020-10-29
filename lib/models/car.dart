@@ -9,8 +9,8 @@ class Car {
 
   factory Car.fromJson(Map<String, dynamic> json) {
     return Car(
-      id: json['id'],
-      factoryId: json['factoryId'],
+      id: json['id'].toString(),
+      factoryId: json['factoryId'].toString(),
       name: json['name'],
       horsepower: json['horsepower'],
       imageUrl: json['car_image'],
