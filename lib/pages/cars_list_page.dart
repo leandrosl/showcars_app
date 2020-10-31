@@ -17,7 +17,7 @@ class CarsListPage extends StatelessWidget {
         title: Text('Cars - $factoryName'),
       ),
       body: Container(
-          child: FutureBuilder(
+        child: FutureBuilder(
           future: _repository.getCarsByFactory(factoryId),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
