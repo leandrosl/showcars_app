@@ -10,7 +10,7 @@ class CarsListPage extends StatelessWidget {
 
   CarsListPage({this.factoryName, this.factoryId});
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -82,7 +82,7 @@ class _CarListPageItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "AAA",
+                  car.manufactor.name,
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
