@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 
+import '../models/car.dart';
+
 class CarDetailPage extends StatelessWidget {
+  final Car car;
+
+  CarDetailPage({this.car});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Tesla Model S"),
+        title: Text("${car.manufactor.name} ${car.name}"),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -15,7 +21,10 @@ class CarDetailPage extends StatelessWidget {
               Stack(
                 children: [
                   Container(),
-                  Image(
+                  (car.imageUrl != null) ? Image(
+                    image: NetworkImage('http://192.168.0.210:5200/${car.imageUrl}'),
+                    fit: BoxFit.cover,
+                  ) : Image(
                     image: AssetImage('assets/images/tesla.jpg'),
                     fit: BoxFit.cover,
                   ),
@@ -58,14 +67,14 @@ class CarDetailPage extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Tesla",
+                        car.manufactor.name,
                         style: TextStyle(
                           fontSize: 24.0,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       Text(
-                        "Model S",
+                        car.name,
                         style: TextStyle(
                           fontSize: 24.0,
                           fontWeight: FontWeight.w400,
@@ -79,7 +88,7 @@ class CarDetailPage extends StatelessWidget {
               _CarDetailsSection(
                 icon: Icons.star,
                 body: [
-                  ..._carSectionItem("Horsepower", "503 HP"),
+                  ..._carSectionItem("Horsepower", "${car.horsepower} HP"),
                   SizedBox(height: 16.0),
                   ..._carSectionItem("Engine Type", "Eletric"),
                 ],

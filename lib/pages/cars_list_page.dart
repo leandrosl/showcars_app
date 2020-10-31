@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:showcars_app/models/car.dart';
+import 'package:showcars_app/pages/car_detail_page.dart';
 import 'package:showcars_app/repositories/car_repository.dart';
 
 class CarsListPage extends StatelessWidget {
@@ -55,52 +56,57 @@ class _CarListPageItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 160.0,
-      padding: EdgeInsets.all(8.0),
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          (car.imageUrl != null) ? Image(
-            image: NetworkImage('http://192.168.0.210:5200/${car.imageUrl}'),
-            fit: BoxFit.cover,
-          ) : Image(
-            image: AssetImage('assets/images/tesla.jpg'),
-          ),
-          Container(
-            padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
-            alignment: Alignment.centerRight,
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Colors.transparent, Colors.black],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                stops: [0.1, 1],
+    return GestureDetector(
+      onTap: () => Navigator.push(context, MaterialPageRoute(
+        builder: (context) => CarDetailPage(car: car),
+      )),
+      child: Container(
+        height: 160.0,
+        padding: EdgeInsets.all(8.0),
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            (car.imageUrl != null) ? Image(
+              image: NetworkImage('http://192.168.0.210:5200/${car.imageUrl}'),
+              fit: BoxFit.cover,
+            ) : Image(
+              image: AssetImage('assets/images/tesla.jpg'),
+            ),
+            Container(
+              padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
+              alignment: Alignment.centerRight,
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Colors.transparent, Colors.black],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                  stops: [0.1, 1],
+                ),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    car.manufactor.name,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24.0,
+                    ),
+                  ),
+                  Text(
+                    car.name,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 20.0,
+                    ),
+                  ),
+                ],
               ),
             ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  car.manufactor.name,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24.0,
-                  ),
-                ),
-                Text(
-                  car.name,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 20.0,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
