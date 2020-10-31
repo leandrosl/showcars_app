@@ -41,33 +41,24 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndexPage,
+        selectedLabelStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
+        unselectedLabelStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+        ),
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.android),
-            title: Text(
-              "CATEGORIAS",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            label: "CATEGORIAS",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.android),
-            title: Text(
-              "FABRICANTES",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            label: "FABRICANTES",
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.favorite),
-            title: Text(
-              "FAVORITOS",
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+            label: "FAVORITOS",
           ),
         ],
         onTap: (selectedIndex) => _changePage(selectedIndex),
