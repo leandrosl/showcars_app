@@ -54,41 +54,33 @@ class CategoryCarsPage extends StatelessWidget {
         children: <Widget>[
           Container(
             height: 120,
-            decoration: BoxDecoration(
-              //color: Colors.brown,
-              /*image: DecorationImage(
-                image: AssetImage('assets/images/tesla.jpg'),
-                fit: BoxFit.fill,
-              ),*/
-            ),
-            child: Center(
-                child: FadeInImage(
-                fit: BoxFit.fill,
+          ),
+          Positioned.fill(
+              child: FadeInImage(
+                fit: BoxFit.cover,
                 image: NetworkImage('http://192.168.0.210:5200/${category.imageUrl}'),
                 placeholder: AssetImage('assets/images/tesla.jpg'),
+            ),
+          ),
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.black87.withOpacity(0.6),
+              ),
+            ), 
+          ),
+          Positioned.fill(
+            child: Center(
+              child: Text(
+                category.name,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
-          Positioned(
-            top: 50,
-            left: 140,
-            child: Text(
-              category.name,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-          /*Container(
-            height: 60,
-            child: Align(
-              alignment: Alignment.center,
-              child: 
-              ),
-            ),
-          ),*/
         ],
       ),
       elevation: 4,
