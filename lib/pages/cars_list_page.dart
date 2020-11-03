@@ -74,39 +74,46 @@ class _CarListPageItem extends StatelessWidget {
             ) : Image(
               image: AssetImage('assets/images/tesla.jpg'),
             ),
-            Container(
-              padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
-              alignment: Alignment.centerRight,
-              decoration: BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Colors.transparent, Colors.black],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                  stops: [0.1, 1],
+            Positioned.fill(
+              child: Container(
+                padding: EdgeInsets.fromLTRB(0.0, 0.0, 16.0, 0.0),
+                alignment: Alignment.centerRight,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [Colors.transparent, Colors.black],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    stops: [0.1, 1],
+                  ),
                 ),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    car.manufactor.name,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24.0,
-                    ),
-                  ),
-                  Text(
-                    car.name,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 20.0,
-                    ),
-                  ),
-                ],
+                child: Container(),
               ),
             ),
+            Positioned(
+              top: 32,
+              right: 16,
+              child: Text(
+                car.manufactor.name,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24.0,
+                ),
+              ),
+            ),
+
+            Positioned(
+              top: 58,
+              right: 16,
+              child: Text(
+                car.name,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 20.0,
+                ),
+              ),
+            )
           ],
         ),
       ),
