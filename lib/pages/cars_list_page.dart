@@ -66,9 +66,11 @@ class _CarListPageItem extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            (car.imageUrl != null) ? Image(
-              image: NetworkImage('http://192.168.0.210:5200/${car.imageUrl}'),
-              fit: BoxFit.cover,
+            (car.imageUrl != null) ? Positioned.fill(
+                child: Image(
+                image: NetworkImage('http://192.168.0.210:5200/${car.imageUrl}'),
+                fit: BoxFit.cover,
+              ),
             ) : Image(
               image: AssetImage('assets/images/tesla.jpg'),
             ),
