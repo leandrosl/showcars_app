@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:showcars_app/models/manufactor.dart';
-import 'package:showcars_app/pages/car_detail_page.dart';
+
 import 'package:showcars_app/pages/cars_list_page.dart';
 
 import 'package:showcars_app/repositories/manufactor_repository.dart';
@@ -12,36 +13,38 @@ class FactoriesCarsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     repository = ManufactorRepository();
 
-    return SingleChildScrollView(
-      child: FutureBuilder(
-        future: repository.getManufactors(),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.connectionState != ConnectionState.done) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            print(snapshot.error);
-            return Center(
-              child: Text("Falha ao tentar acessar o servidor"),
-            );
-          } else if (!snapshot.hasData) {
-            return Center(
-              child: Text("Nenhum fabricante encontrado"),
-            );
-          }
-
-          return GridView.count(
-            shrinkWrap: true,
-            crossAxisCount: 2,
-            children: List.generate(snapshot.data.length, (index) {
-              return _gridItemCard(
-                context: context,
-                manufactor: snapshot.data[index],
+    return Scaffold(
+      body: Container(
+        child: FutureBuilder(
+          future: repository.getManufactors(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.connectionState != ConnectionState.done) {
+              return Center(
+                child: CircularProgressIndicator(),
               );
-            }),
-          );
-        },
+            } else if (snapshot.hasError) {
+              print(snapshot.error);
+              return Center(
+                child: Text("Falha ao tentar acessar o servidor"),
+              );
+            } else if (!snapshot.hasData) {
+              return Center(
+                child: Text("Nenhum fabricante encontrado"),
+              );
+            }
+
+            return GridView.count(
+              shrinkWrap: true,
+              crossAxisCount: 2,
+              children: List.generate(snapshot.data.length, (index) {
+                return _gridItemCard(
+                  context: context,
+                  manufactor: snapshot.data[index],
+                );
+              }),
+            );
+          },
+        ),
       ),
     );
   }
