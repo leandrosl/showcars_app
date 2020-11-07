@@ -31,20 +31,16 @@ class CategoryCarsPage extends StatelessWidget {
               );
             }
 
-            return _categoryCarsList(snapshot.data);
+            return ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: snapshot.data.length,
+              itemBuilder: (BuildContext context, int index) {
+                return _listItemCard(snapshot.data[index]);
+              }
+            );
           }
         ),
       ),
-    );
-  }
-
-  Widget _categoryCarsList(List<Category> categories) {
-    return ListView.builder(
-      scrollDirection: Axis.vertical,
-      itemCount: categories.length,
-      itemBuilder: (BuildContext context, int index) {
-        return _listItemCard(categories[index]);
-      }
     );
   }
 
