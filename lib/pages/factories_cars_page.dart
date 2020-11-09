@@ -44,7 +44,9 @@ class FactoriesCarsPage extends StatelessWidget {
                 return _FactoriesGridItem(
                   manufactor: manufactor,
                   onTap: () {
+                    showLoadingDialog(context, 'carregando');
                     _carRepository.getCarsByFactory(manufactor.id).then((cars) {
+                      Navigator.pop(context);
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) => CarsListPage(
                           cars: cars,

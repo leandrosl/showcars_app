@@ -44,7 +44,9 @@ class CategoryCarsPage extends StatelessWidget {
                 return CategoryListItem(
                   category: _category,
                   onTap: () {
+                    showLoadingDialog(context, 'carregando');
                     _carRepository.getCarsByCategory(_category.id).then((cars) {
+                      Navigator.pop(context);
                       Navigator.push(context, MaterialPageRoute(
                         builder: (context) => CarsListPage(
                           cars: cars,
