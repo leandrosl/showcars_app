@@ -1,49 +1,30 @@
 import 'package:flutter/material.dart';
+
 import 'package:showcars_app/models/car.dart';
+
 import 'package:showcars_app/pages/car_detail_page.dart';
-import 'package:showcars_app/repositories/car_repository.dart';
 
 class CarsListPage extends StatelessWidget {
-  final String factoryName;
-  final String factoryId;
+  final String pageTitle;
+  final List<Car> cars;
 
-  final CarRepository _repository = CarRepository();
-
-  CarsListPage({this.factoryName, this.factoryId});
+  CarsListPage({this.cars, this.pageTitle});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Cars - $factoryName'),
+        title: Text(pageTitle),
       ),
       body: Container(
-        child: FutureBuilder(
-          future: _repository.getCarsByFactory(factoryId),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              print(snapshot.error);
-              return Center(
-                child: Text("Falha ao tentar acessar o servidor"),
-              );
-            } else if (!snapshot.hasData) {
-              return Center(
-                child: Text("Nenhum carro encontrado"),
-              );
-            }
-
-            return ListView.builder(
-              itemCount: snapshot.data.length,
-              itemBuilder: (BuildContext context, int index) {
-                return _CarListPageItem(car: snapshot.data[index]);
-              }
-            );
+        child: (cars == null || cars.length == 0) ? Center(
+          child: Text("Nenhum carro encontrado"),
+        ) : ListView.builder(
+          itemCount: cars.length,
+          itemBuilder: (BuildContext context, int index) {
+            return _CarListPageItem(car: cars[index]);
           },
-        ),
+        ), 
       ),
     );
   }
