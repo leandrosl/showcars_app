@@ -3,20 +3,20 @@ import 'package:flutter/material.dart';
 import 'package:showcars_app/models/manufactor.dart';
 
 import 'package:showcars_app/pages/cars_list_page.dart';
+import 'package:showcars_app/repositories/car_repository.dart';
 
 import 'package:showcars_app/repositories/manufactor_repository.dart';
 
 class FactoriesCarsPage extends StatelessWidget {
-  ManufactorRepository repository;
-
   @override
   Widget build(BuildContext context) {
-    repository = ManufactorRepository();
+    ManufactorRepository _manufactorRepository = ManufactorRepository();
+    CarRepository _carRepository = CarRepository();
 
     return Scaffold(
       body: Container(
         child: FutureBuilder(
-          future: repository.getManufactors(),
+          future: _manufactorRepository.getManufactors(),
           builder: (BuildContext context, AsyncSnapshot snapshot) {
             if (snapshot.connectionState != ConnectionState.done) {
               return Center(
@@ -37,9 +37,20 @@ class FactoriesCarsPage extends StatelessWidget {
               shrinkWrap: true,
               crossAxisCount: 2,
               children: List.generate(snapshot.data.length, (index) {
-                return _gridItemCard(
-                  context: context,
-                  manufactor: snapshot.data[index],
+                var manufactor = snapshot.data[index];
+
+                return _FactoriesGridItem(
+                  manufactor: manufactor,
+                  onTap: () {
+                    _carRepository.getCarsByFactory(manufactor.id).then((cars) {
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => CarsListPage(
+                          cars: cars,
+                          pageTitle: 'Carros - ${manufactor.name}',
+                        ),
+                      ));
+                    });
+                  },
                 );
               }),
             );
@@ -48,17 +59,18 @@ class FactoriesCarsPage extends StatelessWidget {
       ),
     );
   }
+}
 
-  Widget _gridItemCard({@required BuildContext context, @required Manufactor manufactor}) {
+class _FactoriesGridItem extends StatelessWidget {
+  final Manufactor manufactor;
+  final Function onTap;
+
+  _FactoriesGridItem({this.manufactor, this.onTap});
+
+  @override
+  Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(context, MaterialPageRoute(
-            builder: (context) => CarsListPage(
-              factoryName: manufactor.name,
-              factoryId: manufactor.id,
-            ),
-        ));
-      },
+      onTap: onTap,
       child: Card(
         elevation: 4,
         child: Column(
