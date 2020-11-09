@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:showcars_app/models/manufactor.dart';
 
 import 'package:showcars_app/pages/cars_list_page.dart';
-import 'package:showcars_app/repositories/car_repository.dart';
 
+import 'package:showcars_app/repositories/car_repository.dart';
 import 'package:showcars_app/repositories/manufactor_repository.dart';
+
+import '../utils.dart';
 
 class FactoriesCarsPage extends StatelessWidget {
   @override
@@ -77,7 +79,7 @@ class _FactoriesGridItem extends StatelessWidget {
           children: <Widget>[
             Expanded(
               child: (manufactor.logoUrl != null) ? Image.network(
-                'http://192.168.0.210:5200/${manufactor.logoUrl}',
+                '$apiBaseUrl/${manufactor.logoUrl}',
                 fit: BoxFit.contain,
               ) : Image(
                 image: AssetImage('assets/images/laferrari.jpg'),

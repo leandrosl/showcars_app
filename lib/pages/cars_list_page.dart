@@ -4,6 +4,8 @@ import 'package:showcars_app/models/car.dart';
 
 import 'package:showcars_app/pages/car_detail_page.dart';
 
+import '../utils.dart';
+
 class CarsListPage extends StatelessWidget {
   final String pageTitle;
   final List<Car> cars;
@@ -49,7 +51,7 @@ class _CarListPageItem extends StatelessWidget {
           children: [
             (car.imageUrl != null) ? Positioned.fill(
                 child: Image(
-                image: NetworkImage('http://192.168.0.210:5200/${car.imageUrl}'),
+                image: NetworkImage('$apiBaseUrl/${car.imageUrl}'),
                 fit: BoxFit.cover,
               ),
             ) : Image(
@@ -94,7 +96,7 @@ class _CarListPageItem extends StatelessWidget {
                   fontSize: 20.0,
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

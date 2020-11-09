@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 
 import 'package:showcars_app/models/category.dart';
-import 'package:showcars_app/repositories/car_repository.dart';
 
+import 'package:showcars_app/repositories/car_repository.dart';
 import 'package:showcars_app/repositories/category_repository.dart';
 
 import 'cars_list_page.dart';
+
+import '../utils.dart';
 
 class CategoryCarsPage extends StatelessWidget {
   @override
@@ -80,7 +82,7 @@ class CategoryListItem extends StatelessWidget {
             Positioned.fill(
                 child: FadeInImage(
                   fit: BoxFit.cover,
-                  image: NetworkImage('http://192.168.0.210:5200/${category.imageUrl}'),
+                  image: NetworkImage('$apiBaseUrl/${category.imageUrl}'),
                   placeholder: AssetImage('assets/images/tesla.jpg'),
               ),
             ),

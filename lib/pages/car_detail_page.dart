@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../models/car.dart';
 
+import '../utils.dart';
+
 class CarDetailPage extends StatelessWidget {
   final Car car;
 
@@ -22,7 +24,7 @@ class CarDetailPage extends StatelessWidget {
                 children: [
                   Container(),
                   (car.imageUrl != null) ? Image(
-                    image: NetworkImage('http://192.168.0.210:5200/${car.imageUrl}'),
+                    image: NetworkImage('$apiBaseUrl/${car.imageUrl}'),
                     fit: BoxFit.cover,
                   ) : Image(
                     image: AssetImage('assets/images/tesla.jpg'),
