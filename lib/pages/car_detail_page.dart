@@ -90,9 +90,25 @@ class CarDetailPage extends StatelessWidget {
               _CarDetailsSection(
                 icon: Icons.star,
                 body: [
-                  ..._carSectionItem("Horsepower", "${car.horsepower} HP"),
+                  ..._carSectionItem(
+                    "Horsepower",
+                    car.horsepower != null ? "${car.horsepower} HP" : "",
+                  ),
                   SizedBox(height: 16.0),
-                  ..._carSectionItem("Engine Type", "Eletric"),
+                  ..._carSectionItem(
+                    "Engine Type", 
+                    car.engineType ?? "",
+                  ),
+                  SizedBox(height: 16.0),
+                  ..._carSectionItem(
+                    "Torque", 
+                    car.torque ?? "",
+                  ),
+                  SizedBox(height: 16.0),
+                  ..._carSectionItem(
+                    "Gearbox",
+                    car.gearbox ?? "",
+                  ),
                 ],
               ),
               
@@ -101,9 +117,47 @@ class CarDetailPage extends StatelessWidget {
               _CarDetailsSection(
                 icon: Icons.star,
                 body: [
-                  ..._carSectionItem("Top Speed", "305Km/h"),
+                  ..._carSectionItem(
+                    "Top Speed", 
+                    car.topSpeed ?? "",
+                  ),
                   SizedBox(height: 16.0),
-                  ..._carSectionItem("0-100 Time", "3.6s"),
+                  ..._carSectionItem(
+                    "0-100 Time", 
+                    car.acceleration0To100 ?? "",
+                  ),
+                ],
+              ),
+
+              _CarDetailsSectionDivider(),
+
+              _CarDetailsSection(
+                icon: Icons.star,
+                body: [
+                  ..._carSectionItem(
+                    "Doors",
+                    car.numberDoors ?? "",
+                  ),
+                  SizedBox(height: 16.0),
+                  ..._carSectionItem(
+                    "Width",
+                    car.width ?? "",
+                  ),
+                  SizedBox(height: 16.0),
+                  ..._carSectionItem(
+                    "Height",
+                    car.height ?? "",
+                  ),
+                  SizedBox(height: 16.0),
+                  ..._carSectionItem(
+                    "Length",
+                    car.length ?? "",
+                  ),
+                  SizedBox(height: 16.0),
+                  ..._carSectionItem(
+                    "Weight", 
+                    car.weight ?? "",
+                  ),
                 ],
               ),
             ],
