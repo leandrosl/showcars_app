@@ -45,8 +45,12 @@ class Car {
   factory Car.fromJson(Map<String, dynamic> json) {
     return Car(
       id: json['id'].toString(),
-      manufactor: Manufactor.fromJson(json['factory']),
-      category: Category.fromJson(json['category']),
+      manufactor: json['manufactor'] != null 
+        ? Manufactor.fromJson(json['manufactor']) 
+        : Manufactor(),
+      category: json['category'] != null 
+        ? Category.fromJson(json['category']) 
+        : Category(),
       name: json['name'],
       horsepower: json['horsepower'],
       engineType: json['engine_type'],
