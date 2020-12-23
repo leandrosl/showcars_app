@@ -1,8 +1,10 @@
+import 'package:showcars_app/models/category.dart';
 import 'package:showcars_app/models/manufactor.dart';
 
 class Car {
   String id;
   Manufactor manufactor;
+  Category category;
   String name;
 
   String horsepower;
@@ -24,6 +26,7 @@ class Car {
   Car({
     this.id, 
     this.manufactor, 
+    this.category,
     this.name, 
     this.horsepower,
     this.engineType,
@@ -43,6 +46,7 @@ class Car {
     return Car(
       id: json['id'].toString(),
       manufactor: Manufactor.fromJson(json['factory']),
+      category: Category.fromJson(json['category']),
       name: json['name'],
       horsepower: json['horsepower'],
       engineType: json['engine_type'],
