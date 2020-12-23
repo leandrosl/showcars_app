@@ -8,12 +8,12 @@ import '../utils.dart';
 
 class CarRepository {
   Future<List<Car>> getCarsByFactory(String factoryId) async {
-    Response response = await Dio().get("$apiBaseUrl/cars/$factoryId");
+    Response response = await Dio().get("$apiBaseUrl/cars/manufactors/$factoryId");
     return response.data.map<Car>((car) => Car.fromJson(car)).toList();
   }
 
   Future<List<Car>> getCarsByCategory(String categoryId) async {
-    Response response = await Dio().get("$apiBaseUrl/categories/cars/$categoryId");
+    Response response = await Dio().get("$apiBaseUrl/cars/categories/$categoryId");
     return response.data.map<Car>((car) => Car.fromJson(car)).toList();
   }
 }
