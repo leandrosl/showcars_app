@@ -22,16 +22,22 @@ class CarDetailPage extends StatelessWidget {
             children: <Widget>[
               Stack(
                 children: [
-                  Container(),
-                  (car.imageUrl != null) ? Image(
-                    image: NetworkImage('$apiBaseUrl/${car.imageUrl}'),
-                    fit: BoxFit.cover,
-                  ) : Image(
-                    image: AssetImage('assets/images/tesla.jpg'),
-                    fit: BoxFit.cover,
+                  Column(
+                    children: [
+                      (car.imageUrl != null) ? Image(
+                        image: NetworkImage('$apiBaseUrl/${car.imageUrl}'),
+                        fit: BoxFit.cover,
+                      ) : Image(
+                        image: AssetImage('assets/images/tesla.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                      Container(
+                        height: 20.0,
+                      ),
+                    ],
                   ),
                   Positioned(
-                    bottom: 16,
+                    bottom: 4,
                     right: 16,
                     child: Container(
                       width: 50,
@@ -49,7 +55,7 @@ class CarDetailPage extends StatelessWidget {
                       child: Center(
                         child: Icon(
                           Icons.favorite,
-                          color: Colors.red,
+                          color: Colors.grey,
                         ),
                       ),
                     ),
@@ -59,7 +65,7 @@ class CarDetailPage extends StatelessWidget {
               
               Padding(
                 padding: EdgeInsets.only(
-                  top: 24.0,
+                  top: 8.0,
                   left: 16.0,
                   right: 16.0,
                 ),
