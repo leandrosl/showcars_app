@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+
 import 'package:showcars_app/pages/about_app_page.dart';
 import 'package:showcars_app/pages/factories_cars_page.dart';
 import 'package:showcars_app/pages/favorite_cars_page.dart';
 import 'package:showcars_app/pages/category_cars_page.dart';
+import 'package:showcars_app/pages/new_user_page.dart';
+
+import 'package:showcars_app/states/authentication_state.dart';
+
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -34,6 +40,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
       ),
+      drawer: _HomePageDrawer(),
       body: SafeArea(
         child: Container(
           child: _currentPage,
@@ -71,5 +78,74 @@ class _HomePageState extends State<HomePage> {
       _currentIndexPage = selectedIndex;
       _currentPage = _pages[selectedIndex];
     });
+  }
+}
+
+class _HomePageDrawer extends StatefulWidget {
+  @override
+  _HomePageDrawerState createState() => _HomePageDrawerState();
+}
+
+class _HomePageDrawerState extends State<_HomePageDrawer> {
+  @override
+  Widget build(BuildContext context) {
+    print(context.watch<AuthenticationState>().userName);
+    print(context.watch<AuthenticationState>().email);
+
+    return Drawer(
+      child: ListView(
+        children: [
+          DrawerHeader(
+            decoration: BoxDecoration(
+              color: Colors.blue,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                FittedBox(
+                  child: context.watch<AuthenticationState>().userName != "" ? Text(
+                    context.watch<AuthenticationState>().userName,
+                    style: TextStyle(
+                      fontSize: 24.0,
+                      fontWeight: FontWeight.w300,
+                      color: Colors.white,
+                    ),
+                  ) : Container(width: 10.0, height: 10.0),
+                ),
+                FittedBox(
+                  child: context.watch<AuthenticationState>().email != "" ? Text(
+                    context.watch<AuthenticationState>().email,
+                    style: TextStyle(
+                      fontSize: 14.0,
+                      color: Colors.white,
+                    ),
+                  ) : Container(width: 10.0, height: 10.0),
+                ),
+              ],
+            ),
+          ),
+          !context.watch<AuthenticationState>().isLogged ? Align(
+            alignment: Alignment.topCenter,
+            child: ElevatedButton(
+              child: Text('Fazer Login'),
+              onPressed: () => Navigator.push(context, MaterialPageRoute(
+                builder: (context) => NewUserPage(),
+              )),
+            ),
+          ) : Column(
+            children: [
+              Text('Está logado'),
+              ElevatedButton(
+                child: Text('Logout'),
+                onPressed: () => Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => NewUserPage(),
+                )),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
