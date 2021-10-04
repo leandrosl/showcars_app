@@ -89,9 +89,6 @@ class _HomePageDrawer extends StatefulWidget {
 class _HomePageDrawerState extends State<_HomePageDrawer> {
   @override
   Widget build(BuildContext context) {
-    print(context.watch<AuthenticationState>().userName);
-    print(context.watch<AuthenticationState>().email);
-
     return Drawer(
       child: ListView(
         children: [
