@@ -4,7 +4,7 @@ import 'package:showcars_app/pages/about_app_page.dart';
 import 'package:showcars_app/pages/factories_cars_page.dart';
 import 'package:showcars_app/pages/favorite_cars_page.dart';
 import 'package:showcars_app/pages/category_cars_page.dart';
-import 'package:showcars_app/pages/new_user_page.dart';
+import 'package:showcars_app/pages/login_user_page.dart';
 
 import 'package:showcars_app/states/authentication_state.dart';
 
@@ -127,7 +127,7 @@ class _HomePageDrawerState extends State<_HomePageDrawer> {
             child: ElevatedButton(
               child: Text('Fazer Login'),
               onPressed: () => Navigator.push(context, MaterialPageRoute(
-                builder: (context) => NewUserPage(),
+                builder: (context) => LoginUserPage(),
               )),
             ),
           ) : Column(
@@ -135,9 +135,7 @@ class _HomePageDrawerState extends State<_HomePageDrawer> {
               Text('Está logado'),
               ElevatedButton(
                 child: Text('Logout'),
-                onPressed: () => Navigator.push(context, MaterialPageRoute(
-                  builder: (context) => NewUserPage(),
-                )),
+                onPressed: () => print("oi")
               ),
             ],
           ),
