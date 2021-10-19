@@ -19,3 +19,24 @@ void showLoadingDialog(BuildContext context, String text) {
     }
   ); 
 }
+
+void showInfoDialog(BuildContext context, String title, String description) {
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(title),
+        content: Container(
+          child: Text(description),
+        ),
+        actions: [
+          TextButton(
+            child: Text('OK'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+        ],
+      );
+    },
+  );
+}
