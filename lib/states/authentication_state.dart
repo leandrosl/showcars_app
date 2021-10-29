@@ -41,38 +41,44 @@ class AuthenticationState extends ChangeNotifier {
       try {
         final userCredentials = await UserRepository().signIn(email, password);
 
-        if (userCredentials.containsKey('accessToken')) {
-          userName = userCredentials["name"];
-          email = userCredentials["email"];
-
-          await _secureStorage.write(
-            key: storageKeyUserToken, 
-            value: userCredentials["accessToken"],
-          );
-          await _secureStorage.write(key: storageKeyUserEmail, value: email);
-          await _secureStorage.write(key: storageKeyUserName, value: userName);
-
-          isLogged = true;
-
-          notifyListeners();
+        if (!userCredentials.containsKey("accessToken")) {
+          throw Exception("Falha ao tentar realizar login");
         }
+
+        userName = userCredentials["name"];
+        email = userCredentials["email"];
+
+        await _secureStorage.write(
+          key: storageKeyUserToken, 
+          value: userCredentials["accessToken"],
+        );
+        await _secureStorage.write(key: storageKeyUserEmail, value: email);
+        await _secureStorage.write(key: storageKeyUserName, value: userName);
+
+        isLogged = true;
+
+        notifyListeners();
       } catch (error) {
         throw Exception(error);
       }
     }
   }
 
-  //metodo novousuario
-  //TODO: terminar este metodo para novos usuarios
-  /*void createNewUser(String name, String email, String password) {
+  Future<void> createNewUser(String name, String email, String password) async {
     if (name != null && email != null && password != null) {
-      UserRepository().signUp(name, email, password)
-        .then((userCredentials) => {
+      try {
+        bool response = await UserRepository().signUp(name, email, password);
 
-        })
-        .catchError((err) => {});
+        if (!response) {
+          throw Exception("Falha ao tentar cadastrar o usuário");
+        }
+
+        await makeLogin(email, password);
+      } catch (error) {
+        throw Exception(error);
+      }
     }
-  }*/
+  }
 
   Future<void> logoutUser() async {
     await _secureStorage.delete(key: storageKeyUserToken);

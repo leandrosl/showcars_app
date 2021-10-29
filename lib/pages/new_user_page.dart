@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:showcars_app/states/authentication_state.dart';
 import 'package:provider/provider.dart';
+
+import '../utils.dart';
+
+import '../states/authentication_state.dart';
+
+import '../pages/home_page.dart';
 
 class NewUserPage extends StatelessWidget {
   @override
@@ -17,7 +22,8 @@ class NewUserPage extends StatelessWidget {
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.only(left: 16.0, right: 16.0),
-        child: Center(
+        child: Padding(
+          padding: EdgeInsets.only(top: 24.0),
           child: NewUserForm(),
         ),
       ),
@@ -33,7 +39,7 @@ class NewUserForm extends StatefulWidget {
 class _NewUserFormState extends State<NewUserForm> {
   final _newUserFormKey = GlobalKey<FormState>();
 
-  AuthenticationState _authState;
+  AuthenticationState _authenticationState;
 
   final nameTextController = TextEditingController();
   final emailTextController = TextEditingController();
@@ -42,7 +48,7 @@ class _NewUserFormState extends State<NewUserForm> {
   @override
   void initState() {
     super.initState();
-    _authState = Provider.of<AuthenticationState>(context, listen: false);
+    _authenticationState = Provider.of<AuthenticationState>(context, listen: false);
   }
 
   @override
@@ -77,6 +83,7 @@ class _NewUserFormState extends State<NewUserForm> {
           ),
           TextFormField(
             controller: passwordTextController,
+            obscureText: true,
             decoration: const InputDecoration(
               labelText: 'Senha',
             ),
@@ -92,18 +99,19 @@ class _NewUserFormState extends State<NewUserForm> {
             child: ElevatedButton(
               child: Text('Criar Usuário'),
               onPressed: () {
-                _authState.makeLogin(emailTextController.text, passwordTextController.text);
-                Future.delayed(Duration(seconds: 2), () => _authState.checkTokenStorage());
-              },
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(top: 16.0),
-            child: ElevatedButton(
-              child: Text('Fazer logout'),
-              onPressed: () async {
-                await _authState.logoutUser();
-                Future.delayed(Duration(seconds: 2), () => _authState.checkTokenStorage());
+                _authenticationState.createNewUser(
+                  nameTextController.text, emailTextController.text, passwordTextController.text)
+                  .then((value) {
+                    if (Provider.of<AuthenticationState>(context, listen: false).isLogged) {
+                      Navigator.pushReplacement(context, MaterialPageRoute(
+                        builder: (context) => HomePage()
+                      ));
+                    }
+                  })
+                  .catchError((error) {
+                    print(error);
+                    showInfoDialog(context, 'Erro', 'Falha ao tentar cadastrar usuário');
+                  });
               },
             ),
           ),

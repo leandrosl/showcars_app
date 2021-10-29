@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../pages/new_user_page.dart';
 import '../pages/home_page.dart';
+
 import '../states/authentication_state.dart';
+
 import '../utils.dart';
 
 class LoginUserPage extends StatelessWidget {
@@ -29,7 +32,11 @@ class LoginUserPage extends StatelessWidget {
             const SizedBox(height: 48.0),
             TextButton(
               child: Text("Criar Conta"),
-              onPressed: () => print("Oi"),
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(
+                  builder: (context) => NewUserPage(),
+                ));
+              },
             ),
           ],
         ),

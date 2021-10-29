@@ -23,7 +23,7 @@ class UserRepository {
     }
   }
 
-  Future<dynamic> signUp(String name, String email, String password) async {
+  Future<bool> signUp(String name, String email, String password) async {
     Map<String, dynamic> formData = {
       "name": name,
       "email": email,
@@ -33,9 +33,10 @@ class UserRepository {
     Response response = await Dio().post('$apiBaseUrl/auth/signup', data: formData);
 
     if (response.statusCode == 201) {
-      return await signIn(email, password);
+      return true;
     }
 
-    throw Exception("API fetch error");
+    print(response.data['message']);
+    return false;
   }
 }
