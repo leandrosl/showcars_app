@@ -11,7 +11,7 @@ ToDo:
 - [x] Listagem das fabricantes
 - [X] Listagem das categorias
 - [X] Aba Favoritos
-- [ ] Exibição detalha de um veículo
-- [ ] Listagem de carros de uma categoria/fabricante
+- [X] Exibição detalhada de um veículo
+- [X] Listagem de carros de uma categoria/fabricante
 - [ ] Salvar favoritos no back-end
 - [ ] Exibir detalhes de uma marca
