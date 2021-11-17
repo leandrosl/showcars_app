@@ -135,7 +135,11 @@ class _HomePageDrawerState extends State<_HomePageDrawer> {
               Text('Está logado'),
               ElevatedButton(
                 child: Text('Logout'),
-                onPressed: () => print("oi")
+                onPressed: () {
+                  Provider.of<AuthenticationState>(context, listen: false).logoutUser()
+                    .then((value) => Navigator.pop(context))
+                    .catchError((err) => print(err));
+                },
               ),
             ],
           ),
