@@ -8,8 +8,10 @@ void main() => runApp(ShowCarsApp());
 class ShowCarsApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider<AuthenticationState>(
-      create: (_) => AuthenticationState(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider<AuthenticationState>(create: (_) => AuthenticationState()),
+      ],
       child: MaterialApp(
         title: 'ShowCars',
         debugShowCheckedModeBanner: false,
