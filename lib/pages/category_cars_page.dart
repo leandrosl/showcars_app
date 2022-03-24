@@ -1,15 +1,11 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 
-import 'package:showcars_app/models/category.dart';
-
-import 'package:showcars_app/repositories/car_repository.dart';
-import 'package:showcars_app/repositories/category_repository.dart';
-
-import 'cars_list_page.dart';
-
+import '../models/category.dart';
+import '../repositories/car_repository.dart';
+import '../bloc/category_bloc.dart';
 import '../utils.dart';
+
+import './cars_list_page.dart';
 
 class CategoryCarsPage extends StatefulWidget {
   @override
@@ -17,14 +13,13 @@ class CategoryCarsPage extends StatefulWidget {
 }
 
 class _CategoryCarsPageState extends State<CategoryCarsPage> {
-  CategoryRepository _categoryRepository = CategoryRepository();
   CarRepository _carRepository = CarRepository();
 
-  Future<List<Category>> _categories;
+  final categoryBloc = CategoryBloc();
 
   @override
   void initState() {
-    getCategories();
+    categoryBloc.getCategories();
     super.initState();
   }
   
@@ -33,20 +28,20 @@ class _CategoryCarsPageState extends State<CategoryCarsPage> {
     return Scaffold(
       body: Container(
         child: RefreshIndicator(
-          onRefresh: getCategories,
-          child: FutureBuilder(
-            future: _categories,
+          onRefresh: categoryBloc.getCategories,
+          child: StreamBuilder<List<Category>>(
+            stream: categoryBloc.categories,
             builder: (BuildContext context, AsyncSnapshot snapshot) {
-              if (snapshot.connectionState != ConnectionState.done) {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              } else if (snapshot.hasError) {
+              if (snapshot.hasError) {
                 print(snapshot.error);
                 return Center(
                   child: Text("Falha ao tentar acessar o servidor"),
                 );
               } else if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.data.length == 0) {
                 return Center(
                   child: Text("Nenhuma categoria encontrada"),
                 );
@@ -82,10 +77,10 @@ class _CategoryCarsPageState extends State<CategoryCarsPage> {
     );
   }
 
-  Future<void> getCategories() async {
-    setState(() {
-      _categories = _categoryRepository.getCategories();
-    });
+  @override
+  void dispose() {
+    categoryBloc.dispose();
+    super.dispose();
   }
 }
 
