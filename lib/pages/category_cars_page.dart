@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../models/category.dart';
-import '../repositories/car_repository.dart';
 import '../bloc/category_bloc.dart';
 import '../utils.dart';
 
@@ -13,8 +12,6 @@ class CategoryCarsPage extends StatefulWidget {
 }
 
 class _CategoryCarsPageState extends State<CategoryCarsPage> {
-  CarRepository _carRepository = CarRepository();
-
   final categoryBloc = CategoryBloc();
 
   @override
@@ -51,21 +48,17 @@ class _CategoryCarsPageState extends State<CategoryCarsPage> {
                 scrollDirection: Axis.vertical,
                 itemCount: snapshot.data.length,
                 itemBuilder: (BuildContext context, int index) {
-                  Category _category = snapshot.data[index];
+                  Category category = snapshot.data[index];
         
                   return _CategoryListItem(
-                    category: _category,
+                    category: category,
                     onTap: () {
-                      showLoadingDialog(context, 'carregando');
-                      _carRepository.getCarsByCategory(_category.id).then((cars) {
-                        Navigator.pop(context);
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => CarsListPage(
-                            cars: cars,
-                            pageTitle: 'Carros - ${_category.name}',
-                          ),
-                        ));
-                      });
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => CarsListPage(
+                          idCategory: int.tryParse(category.id),
+                          pageTitle: 'Carros - ${category.name}',
+                        ),
+                      ));
                     },
                   );
                 },

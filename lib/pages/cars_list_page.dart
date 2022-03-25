@@ -1,34 +1,76 @@
 import 'package:flutter/material.dart';
 
-import 'package:showcars_app/models/car.dart';
-
-import 'package:showcars_app/pages/car_detail_page.dart';
+import '../models/car.dart';
+import '../pages/car_detail_page.dart';
+import '../bloc/list_cars_bloc.dart';
 
 import '../utils.dart';
 
-class CarsListPage extends StatelessWidget {
+class CarsListPage extends StatefulWidget {
   final String pageTitle;
-  final List<Car> cars;
+  final int idCategory;
+  final int idFactory;
 
-  CarsListPage({this.cars, this.pageTitle});
+  CarsListPage({this.idCategory, this.idFactory, this.pageTitle});
+
+  @override
+  _CarsListPageState createState() => _CarsListPageState();
+}
+
+class _CarsListPageState extends State<CarsListPage> {
+  ListCarsBloc _listCarsBloc;
+
+  @override
+  void initState() {
+    _listCarsBloc = ListCarsBloc();
+    _retrieveCars();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(pageTitle),
+        title: Text(widget.pageTitle),
       ),
-      body: Container(
-        child: (cars == null || cars.length == 0) ? Center(
-          child: Text("Nenhum carro encontrado"),
-        ) : ListView.builder(
-          itemCount: cars.length,
-          itemBuilder: (BuildContext context, int index) {
-            return _CarListPageItem(car: cars[index]);
-          },
-        ), 
+      body: RefreshIndicator(
+        onRefresh: _retrieveCars,
+        child: StreamBuilder<List<Car>>(
+          stream: _listCarsBloc.cars,
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) {
+              print(snapshot.error);
+              return Center(
+                child: Text("Falha ao tentar acessar o servidor"),
+              );
+            } else if (!snapshot.hasData) {
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.data.length == 0) {
+              return Center(
+                child: Text("Nenhum carro encontrada"),
+              );
+            }
+
+            return ListView.builder(
+              itemCount: snapshot.data.length,
+              itemBuilder: (BuildContext context, int index) {
+                return _CarListPageItem(car: snapshot.data[index]);
+              },
+            );
+          }
+        ),
       ),
     );
+  }
+
+  Future<void> _retrieveCars() async {
+    if (widget.idCategory != null) {
+      await _listCarsBloc.getCarsByCategory(widget.idCategory);
+    } else if (widget.idFactory != null) {
+      await _listCarsBloc.getCarsByFactory(widget.idFactory);
+    }
   }
 }
 

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../bloc/factory_bloc.dart';
 import '../models/manufactor.dart';
 import '../pages/cars_list_page.dart';
-import '../repositories/car_repository.dart';
 
 import '../utils.dart';
 
@@ -12,9 +11,7 @@ class FactoriesCarsPage extends StatefulWidget {
   _FactoriesCarsPageState createState() => _FactoriesCarsPageState();
 }
 
-class _FactoriesCarsPageState extends State<FactoriesCarsPage> {
-  CarRepository _carRepository = CarRepository();
-  
+class _FactoriesCarsPageState extends State<FactoriesCarsPage> { 
   FactoryBloc factoryBloc;
 
   @override
@@ -57,16 +54,12 @@ class _FactoriesCarsPageState extends State<FactoriesCarsPage> {
                   return _FactoriesGridItem(
                     manufactor: manufactor,
                     onTap: () {
-                      showLoadingDialog(context, 'carregando');
-                      _carRepository.getCarsByFactory(manufactor.id).then((cars) {
-                        Navigator.pop(context);
-                        Navigator.push(context, MaterialPageRoute(
-                          builder: (context) => CarsListPage(
-                            cars: cars,
-                            pageTitle: 'Carros - ${manufactor.name}',
-                          ),
-                        ));
-                      });
+                      Navigator.push(context, MaterialPageRoute(
+                        builder: (context) => CarsListPage(
+                          idFactory: int.tryParse(manufactor.id),
+                          pageTitle: 'Carros - ${manufactor.name}',
+                        ),
+                      ));
                     },
                   );
                 }),
