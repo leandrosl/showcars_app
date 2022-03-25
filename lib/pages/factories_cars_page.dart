@@ -1,67 +1,87 @@
 import 'package:flutter/material.dart';
 
-import 'package:showcars_app/models/manufactor.dart';
-
-import 'package:showcars_app/pages/cars_list_page.dart';
-
-import 'package:showcars_app/repositories/car_repository.dart';
-import 'package:showcars_app/repositories/manufactor_repository.dart';
+import '../bloc/factory_bloc.dart';
+import '../models/manufactor.dart';
+import '../pages/cars_list_page.dart';
+import '../repositories/car_repository.dart';
 
 import '../utils.dart';
 
-class FactoriesCarsPage extends StatelessWidget {
+class FactoriesCarsPage extends StatefulWidget {
+  @override
+  _FactoriesCarsPageState createState() => _FactoriesCarsPageState();
+}
+
+class _FactoriesCarsPageState extends State<FactoriesCarsPage> {
+  CarRepository _carRepository = CarRepository();
+  
+  FactoryBloc factoryBloc;
+
+  @override
+  void initState() {
+    factoryBloc = FactoryBloc();
+    factoryBloc.getFactories();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    ManufactorRepository _manufactorRepository = ManufactorRepository();
-    CarRepository _carRepository = CarRepository();
-
     return Scaffold(
       body: Container(
-        child: FutureBuilder(
-          future: _manufactorRepository.getManufactors(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
-            if (snapshot.connectionState != ConnectionState.done) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              print(snapshot.error);
-              return Center(
-                child: Text("Falha ao tentar acessar o servidor"),
-              );
-            } else if (!snapshot.hasData) {
-              return Center(
-                child: Text("Nenhum fabricante encontrado"),
-              );
-            }
-
-            return GridView.count(
-              shrinkWrap: true,
-              crossAxisCount: 2,
-              children: List.generate(snapshot.data.length, (index) {
-                var manufactor = snapshot.data[index];
-
-                return _FactoriesGridItem(
-                  manufactor: manufactor,
-                  onTap: () {
-                    showLoadingDialog(context, 'carregando');
-                    _carRepository.getCarsByFactory(manufactor.id).then((cars) {
-                      Navigator.pop(context);
-                      Navigator.push(context, MaterialPageRoute(
-                        builder: (context) => CarsListPage(
-                          cars: cars,
-                          pageTitle: 'Carros - ${manufactor.name}',
-                        ),
-                      ));
-                    });
-                  },
+        child: RefreshIndicator(
+          onRefresh: factoryBloc.getFactories,
+          child: StreamBuilder<List<Manufactor>>(
+            stream: factoryBloc.factories,
+            builder: (BuildContext context, AsyncSnapshot snapshot) {
+              if (snapshot.hasError) {
+                print(snapshot.error);
+                return Center(
+                  child: Text("Falha ao tentar acessar o servidor"),
                 );
-              }),
-            );
-          },
+              } else if (!snapshot.hasData) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (snapshot.data.length == 0) {
+                return Center(
+                  child: Text("Nenhum fabricante encontrado"),
+                );
+              }
+        
+              return GridView.count(
+                shrinkWrap: true,
+                crossAxisCount: 2,
+                children: List.generate(snapshot.data.length, (index) {
+                  var manufactor = snapshot.data[index];
+        
+                  return _FactoriesGridItem(
+                    manufactor: manufactor,
+                    onTap: () {
+                      showLoadingDialog(context, 'carregando');
+                      _carRepository.getCarsByFactory(manufactor.id).then((cars) {
+                        Navigator.pop(context);
+                        Navigator.push(context, MaterialPageRoute(
+                          builder: (context) => CarsListPage(
+                            cars: cars,
+                            pageTitle: 'Carros - ${manufactor.name}',
+                          ),
+                        ));
+                      });
+                    },
+                  );
+                }),
+              );
+            },
+          ),
         ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    factoryBloc.dispose();
+    super.dispose();
   }
 }
 
